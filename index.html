@@ -1,12 +1,54 @@
-<!doctype html>
-<html lang="ja">
-<head>
-  <meta charset="utf-8">
-  <title>My Portfolio</title>
-</head>
-<body>
-  <h1>ようこそ！</h1>
-  <p>ここに作品を紹介していきます。</p>
-</body>
-</html>
+<!doctype html><html lang="ja"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Hiroki – 緊急連絡/ミラー</title>
+<link rel="stylesheet" href="style.css">
+<meta property="og:title" content="Hiroki – 緊急連絡/ミラー">
+<meta property="og:description" content="Xやpixivが使えない時の避難所。最新情報とミラー先はこちら。">
+<meta property="og:image" content="https://<username>.github.io/<repo>/img/ogp.png">
+</head><body>
+<header class="wrap">
+  <h1>Hiroki – 緊急連絡 / ミラー</h1>
+  <p class="sub">X・pixivが停止した場合の避難所です。</p>
+  <div class="status ok" id="status">通常運用中</div>
+</header>
 
+<main class="wrap">
+  <section>
+    <h2>現在地 / 連絡先</h2>
+    <ul class="links">
+      <li>🕊 X（現Twitter）：<a target="_blank" rel="me noopener" href="https://x.com/your_id">x.com/your_id</a></li>
+      <li>🖼 pixiv：<a target="_blank" rel="noopener" href="https://www.pixiv.net/users/xxxxxxx">pixiv</a></li>
+      <li>📨 Mail：<a href="mailto:you@example.com">you@example.com</a></li>
+      <li>📌 代替ミラー：<a target="_blank" rel="noopener" href="https://note.com/your_id">note</a> / <a target="_blank" rel="noopener" href="https://ao3.org/users/your_id">AO3</a></li>
+    </ul>
+    <p class="tip">※上記が見られない場合、このページが最終案内になります。</p>
+  </section>
+
+  <section>
+    <h2>最新情報</h2>
+    <div id="updates" class="card"></div>
+  </section>
+
+  <section>
+    <h2>作品バックアップ（簡易）</h2>
+    <p>一部テキスト版やEPUBを置いています。（<a href="./backup/">/backup</a>）</p>
+  </section>
+</main>
+
+<footer class="wrap"><small>© Hiroki / Hosted on GitHub Pages</small></footer>
+
+<script>
+// updates.json を読み込んで表示（テキストのみ）
+fetch('updates.json?_=' + Date.now()).then(r=>r.json()).then(d=>{
+  const box = document.getElementById('updates');
+  box.innerHTML = d.items.map(i=>`
+    <div class="item">
+      <div class="date">${i.date}</div>
+      <div class="body">${i.text}</div>
+      ${i.link ? `<a class="ext" target="_blank" rel="noopener" href="${i.link}">詳細</a>`:''}
+    </div>`).join('');
+  // ステータス表示（任意）
+  if(d.status){ const s=document.getElementById('status'); s.textContent=d.status.text; s.className='status '+d.status.level; }
+});
+</script>
+</body></html>
